@@ -14,8 +14,10 @@
     "fs": "^0.0.1-security",
     "googleapis": "^126.0.1",
     "next": "13.5.4",
+    "razorpay": "^2.9.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^10",

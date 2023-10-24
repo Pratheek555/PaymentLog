@@ -11,8 +11,7 @@ import {
 export const dynamic = "force-dynamic";
 export default async function page() {
   const db = fireStore;
-  const paymentSheet = "11GGo44DfpPyGUGWNcBEHvvvOvyqqvsVwYTeGjNHeKeI";
-  const uuidPage = "1nUTSUhR1T5OolVq1gt8eoHggJVosYim3tTQ5I2aqA8I";
+  const internalPage = "1oHc8WSrakq41E5HCpnuyxr6OWjCokTzKXqLSirXYWbc";
 
   const collections = await db.listCollections();
   let data = [];
@@ -35,7 +34,7 @@ export default async function page() {
   for (let k = 0; k < collections.length; k++) {
     let sheet = await db
       .collection(collections[k].id)
-      .where("food", "!=", null)
+      .where("institution", "==", `St`)
       .get();
     let delegationName = "Individual";
     let delegation = await db
@@ -54,32 +53,17 @@ export default async function page() {
         person.data().email,
         person.data().committee,
         delegationName,
-        person.data().food,
-        person.data().institution,
-        person.data().phoneNumber,
       ]);
     });
     data.push(...temp);
   }
   const result = await googleSheets.spreadsheets.values.update({
     auth, //auth object
-    spreadsheetId: uuidPage, //spreadsheet id
+    spreadsheetId: internalPage, //spreadsheet id
     range: "Sheet1",
     valueInputOption: "USER_ENTERED",
     resource: {
-      values: [
-        [
-          "UUID",
-          "NAME",
-          "EMAIL",
-          "COMITTEE",
-          "DELEGATION",
-          "FOOD PREFERENCE",
-          "INSTITUTION",
-          "PHONE NUMBERS",
-        ],
-        ...data,
-      ],
+      values: [["UUID", "NAME", "EMAIL", "COMITTEE", "DELEGATION"], ...data],
     },
   });
 
