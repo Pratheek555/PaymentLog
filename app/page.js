@@ -1,11 +1,28 @@
 import { Uuidform } from "./components/frontEnd";
 import { fireStore, googleSheets, auth } from "./components/firebase.js";
+import fs from "fs"
+
 const db = fireStore;
-async function handleSubmit(e) {
+const individualJson = fs.readFileSync("individual.json")
+const individualList = JSON.parse(individualJson)
+async function onClick(e, value) {
+  "use server"
+
+  //console.log(e)
+  //console.log("hello world")
+  await db.collection(individualList[e]).doc(e).update({ checkIn: value })
+
+}
+async function handleSubmit(uuid) {
   "use server";
-  let uuid = e.get("uuid");
+
   if (parseInt(uuid) % 10 == 0) {
-    return [{ name: "hello" }];
+
+    let person = await db.collection(individualList[uuid]).doc(uuid).get()
+    let temp = { ...person.data() }
+    temp.uuid = uuid
+
+    return [temp]
   } else if (parseInt(uuid) % 5 == 0) {
     return [{ name: "dello" }];
   } else {
@@ -27,6 +44,7 @@ async function handleSubmit(e) {
         food: person.data().food,
         institution: person.data().institution,
         number: person.data().phoneNumber,
+        checkIn: person.data().checkIn,
       });
     });
     return temp;
@@ -36,7 +54,7 @@ async function handleSubmit(e) {
 export default async function Home() {
   return (
     <main className="bg-neutral-950">
-      <Uuidform handleSubmit={handleSubmit} />
+      <Uuidform handleSubmit={handleSubmit} onClick={onClick} />
     </main>
   );
 }

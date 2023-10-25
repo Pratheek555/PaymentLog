@@ -1,4 +1,4 @@
-"use-client";
+
 import { fireStore, googleSheets, auth } from "../components/firebase.js";
 import {
   getFirestore,
