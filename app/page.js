@@ -1,10 +1,13 @@
 import { Uuidform } from "./components/frontEnd";
 import { fireStore, googleSheets, auth } from "./components/firebase.js";
-import individualJson from "./individual.json" assert { type: "json" };
+import { promises as fs } from "fs";
 
 const db = fireStore;
-// const individualJson = fs.readFileSync("./individual.json")
-const individualList = { ...individualJson };
+const individualJson = await fs.readFile(
+  process.cwd() + "/app/individual.json",
+  "utf8"
+);
+const individualList = JSON.parse(individualJson);
 async function onClick(e, value) {
   "use server";
 
