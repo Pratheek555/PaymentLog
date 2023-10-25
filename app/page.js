@@ -1,10 +1,11 @@
 import { Uuidform } from "./components/frontEnd";
 import { fireStore, googleSheets, auth } from "./components/firebase.js";
 import { promises as fs } from "fs";
+import path from "path";
 
 const db = fireStore;
 const individualJson = await fs.readFile(
-  process.cwd() + "/app/individual.json",
+  path.join(process.cwd(), "individual.json"),
   "utf8"
 );
 const individualList = JSON.parse(individualJson);
