@@ -1,28 +1,26 @@
 import { Uuidform } from "./components/frontEnd";
 import { fireStore, googleSheets, auth } from "./components/firebase.js";
-import fs from "fs"
+import individualJson from "./individual.json" assert { type: "json" };
 
 const db = fireStore;
-const individualJson = fs.readFileSync("individual.json")
-const individualList = JSON.parse(individualJson)
+// const individualJson = fs.readFileSync("./individual.json")
+const individualList = { ...individualJson };
 async function onClick(e, value) {
-  "use server"
+  "use server";
 
   //console.log(e)
   //console.log("hello world")
-  await db.collection(individualList[e]).doc(e).update({ checkIn: value })
-
+  await db.collection(individualList[e]).doc(e).update({ checkIn: value });
 }
 async function handleSubmit(uuid) {
   "use server";
 
   if (parseInt(uuid) % 10 == 0) {
+    let person = await db.collection(individualList[uuid]).doc(uuid).get();
+    let temp = { ...person.data() };
+    temp.uuid = uuid;
 
-    let person = await db.collection(individualList[uuid]).doc(uuid).get()
-    let temp = { ...person.data() }
-    temp.uuid = uuid
-
-    return [temp]
+    return [temp];
   } else if (parseInt(uuid) % 5 == 0) {
     return [{ name: "dello" }];
   } else {
