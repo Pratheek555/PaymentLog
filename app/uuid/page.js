@@ -1,4 +1,3 @@
-
 import { fireStore, googleSheets, auth } from "../components/firebase.js";
 import {
   getFirestore,
@@ -12,7 +11,8 @@ export const dynamic = "force-dynamic";
 export default async function page() {
   const db = fireStore;
   const paymentSheet = "11GGo44DfpPyGUGWNcBEHvvvOvyqqvsVwYTeGjNHeKeI";
-  const uuidPage = "1nUTSUhR1T5OolVq1gt8eoHggJVosYim3tTQ5I2aqA8I";
+  const olduuidPage = "1nUTSUhR1T5OolVq1gt8eoHggJVosYim3tTQ5I2aqA8I";
+  const uuidPage = "1G_fkLkrc3YOYUffzcvATgb6-2ZjvFDXcC7npLkmqJB8";
 
   const collections = await db.listCollections();
   let data = [];
@@ -47,7 +47,12 @@ export default async function page() {
     }
 
     let temp = [];
+
     sheet.forEach((person) => {
+      let number;
+      person.data.phoneNumber
+        ? (number = person.data().phoneNumber.toString())
+        : "";
       temp.push([
         person.id,
         person.data().name,
@@ -56,7 +61,7 @@ export default async function page() {
         delegationName,
         person.data().food,
         person.data().institution,
-        person.data().phoneNumber,
+        number,
       ]);
     });
     data.push(...temp);

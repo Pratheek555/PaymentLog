@@ -58,19 +58,9 @@ export default async function page() {
         .doc(person.id)
         .update({ checkIn: 0, meals: 0 });
     });
-    fs.writeFileSync("individual", JSON.stringify(individualList));
+    fs.writeFileSync("app/individual.json", JSON.stringify(individualList));
   }
   console.log(delegationList);
-
-  await googleSheets.spreadsheets.values.update({
-    auth, //auth object
-    spreadsheetId: paymentSheet, //spreadsheet id
-    range: "Sheet1",
-    valueInputOption: "USER_ENTERED",
-    resource: {
-      values: [["NAME", "PAYMENT ID", "AMOUNT"], ...data],
-    },
-  });
 
   return (
     <div>
