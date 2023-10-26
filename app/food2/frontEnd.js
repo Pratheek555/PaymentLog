@@ -5,11 +5,17 @@ function Display({ people, onClick, query, refresh, changePeople }) {
   return (
     <div className="flex justify-center items-center flex-wrap">
       {people.map((person, i) => {
+        let value = person.meals == 1 || person.meals == 0 ? person.meals : 1;
+        let negValue = person.meals < 1 ? 1 : person.meals;
         return (
           <div
             key={i}
             className={` w-96 h-64 p-6 bg-black border ${
-              person.meals == 1 ? "border-emerald-700 " : " border-red-500  "
+              person.meals == 1
+                ? " border-yellow-500 "
+                : person.meals == 2
+                ? "border-green-600 "
+                : " border-red-500 "
             }rounded-md  m-12 `}
           >
             <h1 className="text-xl text-white font-bold">{person.uuid}</h1>
@@ -22,7 +28,7 @@ function Display({ people, onClick, query, refresh, changePeople }) {
               type="button"
               class="mt-4 text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               onClick={async () => {
-                await onClick(person.uuid, 1);
+                await onClick(person.uuid, parseInt(value) + 1);
                 let details = await refresh(query);
 
                 console.log(details);
@@ -39,7 +45,7 @@ function Display({ people, onClick, query, refresh, changePeople }) {
               type="button"
               class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               onClick={async () => {
-                await onClick(person.uuid, 0);
+                await onClick(person.uuid, parseInt(negValue) - 1);
                 let details = await refresh(query);
 
                 console.log(details);
@@ -65,7 +71,7 @@ export function Uuidform(props) {
 
   return (
     <main className="flex min-h-screen flex-col items-center  p-24 ">
-      <h1 className="text-white text-xl font-extrabold mb-20">Hello WORLD</h1>
+      <h1 className="text-white text-xl font-extrabold mb-20">DAY 2 FOOD</h1>
 
       <form
         action={async (e) => {

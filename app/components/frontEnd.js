@@ -8,10 +8,9 @@ function Display({ people, onClick, query, refresh, changePeople }) {
         return (
           <div
             key={i}
-            className={` w-96 h-64 p-6 bg-black border ${person.checkIn == 1
-              ? "border-emerald-700 "
-              : " border-red-500  "
-              }rounded-md  m-12 `}
+            className={` w-96 h-64 p-6 bg-black border ${
+              person.checkIn == 1 ? "border-emerald-700 " : " border-red-500  "
+            }rounded-md  m-12 `}
           >
             <h1 className="text-xl text-white font-bold">{person.uuid}</h1>
             <h1 className="text-xl text-white font-bold">{person.name}</h1>
@@ -23,10 +22,8 @@ function Display({ people, onClick, query, refresh, changePeople }) {
               type="button"
               class="mt-4 text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               onClick={async () => {
-
-                await onClick(person.uuid, 1)
+                await onClick(person.uuid, 1);
                 let details = await refresh(query);
-
 
                 console.log(details);
                 changePeople(details);
@@ -34,8 +31,6 @@ function Display({ people, onClick, query, refresh, changePeople }) {
                 // let details = await props.handleSubmit(person.uuid.toString());
                 // console.log(details);
                 // changePeople(details);
-
-
               }}
             >
               CHECKIN
@@ -44,10 +39,8 @@ function Display({ people, onClick, query, refresh, changePeople }) {
               type="button"
               class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               onClick={async () => {
-
-                await onClick(person.uuid, 0)
+                await onClick(person.uuid, 0);
                 let details = await refresh(query);
-
 
                 console.log(details);
                 changePeople(details);
@@ -55,8 +48,6 @@ function Display({ people, onClick, query, refresh, changePeople }) {
                 // let details = await props.handleSubmit(person.uuid.toString());
                 // console.log(details);
                 // changePeople(details);
-
-
               }}
             >
               CHECKOUT
@@ -69,8 +60,8 @@ function Display({ people, onClick, query, refresh, changePeople }) {
 }
 
 export function Uuidform(props) {
-  const [people, changePeople] = useState([{ name: "what" }]);
-  const [query, changeQuery] = useState("")
+  const [people, changePeople] = useState([{ name: "ENTER UUID" }]);
+  const [query, changeQuery] = useState("");
 
   return (
     <main className="flex min-h-screen flex-col items-center  p-24 ">
@@ -79,11 +70,10 @@ export function Uuidform(props) {
       <form
         action={async (e) => {
           let details = await props.handleSubmit(e.get("uuid"));
-          changeQuery(e.get("uuid"))
+          changeQuery(e.get("uuid"));
 
           console.log(details);
           changePeople(details);
-
         }}
       >
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -112,7 +102,13 @@ export function Uuidform(props) {
         </button>
       </form>
 
-      <Display people={people} onClick={props.onClick} refresh={props.handleSubmit} query={query} changePeople={changePeople} />
+      <Display
+        people={people}
+        onClick={props.onClick}
+        refresh={props.handleSubmit}
+        query={query}
+        changePeople={changePeople}
+      />
     </main>
   );
 }
